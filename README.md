@@ -7,3 +7,5 @@ This repository stores my notes and materials from teaching HI 743 at the Univer
 
 **Fundamentals of Machine Learning for Predictive Data Analytics: Algorithms, Worked Examples, and Case Studies**
 > Kelleher, John D., Brian Mac Namee, and Aoife D'Arcy. Fundamentals of Machine Learning for Predictive Data Analytics: Algorithms, Worked Examples, and Case Studies. The MIT Press, 2015.
+
+This course met once weekly on Thursdays where myself and 14 students would walk through various machine learning models and their applications to Healthcare data. At the end of each lecture, we would work through an example of the methods being applied to data using **R**. The lecture slides and lab portions are included in each lecture's directory. 
