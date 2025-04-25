@@ -1,0 +1,108 @@
+%----------------------------------------------------------------------------------------
+%    PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}
+\usetheme{SimplePlus}
+
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{wrapfig}
+\usepackage{listings}
+\usepackage[font=small,labelfont=bf]{caption}
+
+%----------------------------------------------------------------------------------------
+%    TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{Neural Network \& Deep Learning}
+\subtitle{HI 743}
+
+\author{Ryan Gallagher}
+
+\institute
+{
+    Department of Health Informatics and Administration \\
+    Zilber College of Public Health \\
+    University of Wisconsin - Milwaukee% Your institution for the title page
+}
+\date{April 10th, 2025} % Date, can be changed to a custom date
+
+
+%----------------------------------------------------------------------------------------
+%    PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\begin{frame}
+    % Print the title page as the first slide
+    \titlepage
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%    Outline
+%----------------------------------------------------------------------------------------
+
+%\begin{frame}{Overview}
+    % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+%    \tableofcontents
+%\end{frame}
+
+%----------------------------------------------------------------------------------------
+%    Slides
+%----------------------------------------------------------------------------------------
+
+\section{Overview}
+
+\begin{frame}{What is Deep Learning?}
+  \begin{block}{Definition}
+    Deep learning is a class of machine learning techniques that use \textbf{multi-layered neural networks} to learn data representations and predictive models.
+  \end{block}
+
+  \vspace{0.5em}
+
+  \begin{itemize}
+    \item Capable of modeling \textbf{highly complex, non-linear} relationships in data.
+    \item Processes raw inputs through multiple layers to learn useful features \textit{automatically}.
+    \item Particularly effective for tasks involving \textbf{images}, \textbf{speech}, \textbf{text}, and \textbf{healthcare records}.
+    \item Enables end-to-end learning: from raw input to final prediction.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Neural Networks}
+  \begin{block}{What is a Neural Network?}
+    A \textbf{neural network} is a layered mathematical model designed to approximate complex functions by combining many simple units (neurons).
+  \end{block}
+
+  \vspace{0.5em}
+
+  \begin{itemize}
+    \item Composed of \textbf{layers}:
+      \begin{itemize}
+        \item \textbf{Input layer}: Receives raw features (e.g., patient age, lab values).
+        \item \textbf{Hidden layers}: Transform inputs using weighted combinations and activation functions.
+        \item \textbf{Output layer}: Produces the final prediction (e.g., diagnosis probability).
+      \end{itemize}
+    \item Each unit (\textbf{neuron}) computes a weighted sum of its inputs, applies a non-linear function, and passes it forward.
+    \item The network \textbf{learns} by adjusting weights to minimize prediction error, often using \textit{gradient descent}.
+    \item With enough hidden layers, a neural network can approximate almost any function (\textbf{Universal Approximation Theorem}).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Neural Networks Explained}
+\centering
+But what is a neural network? | by 3Blue1Brown
+	\begin{center}
+    \href{https://www.youtube.com/watch?v=aircAruvnKk}{%
+      \includegraphics[width=0.5\linewidth]{images/utube.jpg}%
+    }
+  \end{center}
+  
+\end{frame}
+
+
+
+
+\end{document}

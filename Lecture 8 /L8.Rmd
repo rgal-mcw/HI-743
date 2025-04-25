@@ -1,0 +1,115 @@
+---
+title: "Decision Trees"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ISLR2)
+library(tree)
+```
+
+# 1. Classification Trees
+
+## 1.1 Fitting a Classification Tree
+```{r}
+attach(Carseats)
+High = factor(ifelse(Sales <= 8, "No", "Yes"))
+Carseats = data.frame(Carseats, High)
+
+# Fit classification tree
+tree.carseats = tree(High ~ . - Sales, data=Carseats)
+summary(tree.carseats)
+```
+
+## 1.2 Visualize the Tree
+```{r}
+plot(tree.carseats)
+text(tree.carseats)
+```
+
+## 1.3 Evaluating Performance
+
+```{r}
+train = sample(1:nrow(Carseats), 200)
+Carseats.test = Carseats[-train, ]
+High.test = High[-train]
+
+# Train Model
+tree.carseats = tree(High ~ . - Sales, data = Carseats, subset = train)
+tree.pred = predict(tree.carseats, Carseats.test, type = "class")
+
+# Confusion Maxtrix
+table(tree.pred, High.test)
+mean(tree.pred == High.test)
+```
+
+
+## 2. Pruning Trees
+Use cross-validation to determine optimal number of nodes
+
+```{r}
+cv.carseats = cv.tree(tree.carseats, FUN=prune.misclass)
+plot(cv.carseats$size, cv.carseats$dev, type = 'b', xlab="Tree Size", ylab="Cross-Validation Error")
+
+```
+
+```{r}
+prune.carseats = prune.misclass(tree.carseats, best=4)
+plot(prune.carseats)
+text(prune.carseats, pretty=0)
+
+```
+
+```{r}
+tree.pred = predict(prune.carseats, Carseats.test, type = 'class')
+table(tree.pred, High.test)
+mean(tree.pred == High.test)
+```
+
+
+# 3. Regression Trees
+
+```{r}
+train = sample(1:nrow(Boston), nrow(Boston) / 2)
+tree.boston = tree(medv ~ ., data=Boston, subset = train)
+summary(tree.boston)
+```
+
+# 3.1 Visualize our Regression Tree
+```{r}
+plot(tree.boston)
+text(tree.boston, pretty=0)
+
+# Test MSE
+pred = predict(tree.boston, newdata = Boston[-train, ])
+mean((pred - Boston$medv[-train])^2)
+```
+
+# 3.2 Prune the Regression Tree
+```{r}
+cv.boston = cv.tree(tree.boston)
+
+# Plot the cv results
+plot(cv.boston$size, cv.boston$dev, type = "b", xlab = "Tree Size", ylab = "Cross-validation Erro")
+```
+
+```{r}
+# Prune to optimal size
+prune.boston = prune.tree(tree.boston, best = 5)
+
+# Visualize the pruned tree
+plot(prune.boston)
+text(prune.boston, pretty=0)
+```
+
+```{r}
+#Evaluate performance on test set
+pred.prune = predict(prune.boston, newdata = Boston[-train, ])
+prune.mse = mean((pred.prune - Boston$medv[-train])^2)
+
+prune.mse
+```

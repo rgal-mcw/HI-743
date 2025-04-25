@@ -1,0 +1,69 @@
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\slideentry {0}{0}{2}{2/2}{}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\beamer@sectionpages {1}{2}}
+\headcommand {\beamer@subsectionpages {1}{2}}
+\headcommand {\sectionentry {1}{Simple Linear Regression}{3}{Simple Linear Regression}{0}}
+\headcommand {\beamer@subsectionpages {3}{2}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{3}{Simple Linear Model}}
+\headcommand {\slideentry {1}{1}{1}{3/3}{Simple Linear Model}{0}}
+\headcommand {\beamer@framepages {3}{3}}
+\headcommand {\slideentry {1}{1}{2}{4/4}{Simple Linear Model}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\slideentry {1}{1}{3}{5/5}{Simple Linear Model}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\beamer@subsectionpages {3}{5}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{6}{Statistical Notation}}
+\headcommand {\slideentry {1}{2}{1}{6/6}{Statistical Notation}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\slideentry {1}{2}{2}{7/7}{Statistical Notation}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\beamer@subsectionpages {6}{7}}
+\headcommand {\beamer@subsectionentry {0}{1}{3}{8}{Estimating Coefficients}}
+\headcommand {\slideentry {1}{3}{1}{8/8}{Estimating Coefficients}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\slideentry {1}{3}{2}{9/9}{Estimating Coefficients}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\beamer@subsectionpages {8}{9}}
+\headcommand {\beamer@subsectionentry {0}{1}{4}{10}{Assessing Model Accuracy}}
+\headcommand {\slideentry {1}{4}{1}{10/10}{Assessing Model Accuracy}{0}}
+\headcommand {\beamer@framepages {10}{10}}
+\headcommand {\slideentry {1}{4}{2}{11/11}{Assessing Model Accuracy}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\slideentry {1}{4}{3}{12/12}{Assessing Model Accuracy}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\beamer@sectionpages {3}{12}}
+\headcommand {\beamer@subsectionpages {10}{12}}
+\headcommand {\sectionentry {2}{Multiple Linear Regression}{13}{Multiple Linear Regression}{0}}
+\headcommand {\beamer@subsectionpages {13}{12}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{13}{Multiple Regression Model}}
+\headcommand {\slideentry {2}{1}{1}{13/13}{Multiple Regression Model}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\beamer@subsectionpages {13}{13}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{14}{Regression Coefficients}}
+\headcommand {\slideentry {2}{2}{1}{14/14}{Regression Coefficients}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\slideentry {2}{2}{2}{15/15}{Regression Coefficients}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\beamer@subsectionpages {14}{15}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{16}{Collinearity}}
+\headcommand {\slideentry {2}{3}{1}{16/16}{Collinearity}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\beamer@subsectionpages {16}{16}}
+\headcommand {\beamer@subsectionentry {0}{2}{4}{17}{Assessing Model Fit}}
+\headcommand {\slideentry {2}{4}{1}{17/17}{Assessing Model Fit}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\slideentry {2}{4}{2}{18/18}{Assessing Model Fit}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\beamer@subsectionpages {17}{18}}
+\headcommand {\beamer@subsectionentry {0}{2}{5}{19}{Feature Selection}}
+\headcommand {\slideentry {2}{5}{1}{19/19}{Feature Selection}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\slideentry {2}{5}{2}{20/20}{Feature Selection}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\beamer@partpages {1}{20}}
+\headcommand {\beamer@subsectionpages {19}{20}}
+\headcommand {\beamer@sectionpages {13}{20}}
+\headcommand {\beamer@documentpages {20}}
+\headcommand {\gdef \inserttotalframenumber {20}}

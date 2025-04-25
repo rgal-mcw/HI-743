@@ -1,0 +1,216 @@
+---
+title: "DeepLearning"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+use_virtualenv("r-keras", required = TRUE)
+```
+
+# Single Layer Neural Network
+
+## Hitters Data Setup
+
+Our goal will be to fit a Single Layer Neural Network to our Hitters dataset. We will start by loading and cleaning this data.
+
+```{r, message=F}
+library(ISLR2)
+# Clean and export the dataset for Python
+Hitters_clean = na.omit(Hitters)
+
+# We will fit a linear regression for comparison as well and save those results
+x = scale(model.matrix(Salary ~ . - 1, data = Hitters_clean))
+y = Hitters_clean$Salary
+
+Gitters = na.omit(Hitters)
+n = nrow(Gitters)
+ntest = trunc(n / 3)
+testid = sample(1:n, ntest)
+lfit = lm(Salary ~ ., data = Gitters[-testid, ])
+lpred = predict(lfit, Gitters[testid, ])
+mean(abs(lpred - Gitters$Salary[testid]))
+
+# Save as CSV for Python to read
+write.csv(x, "~/Desktop/Personal/UWM/Lecture 10/x.csv", row.names = FALSE)
+write.csv(y, "~/Desktop/Personal/UWM/Lecture 10/y.csv", row.names = FALSE)
+
+
+## CREATE VIRTUAL ENV
+#library(reticulate)
+# Create a new virtual environment
+#virtualenv_create("r-keras")
+
+# Install necessary packages
+#virtualenv_install("r-keras", packages = c(
+#  "numpy", "pandas", "matplotlib", "scikit-learn", "tensorflow"
+#))
+
+# Load env
+#use_virtualenv("r-keras", required = TRUE)
+```
+
+## Neural Network in Python (via Keras)
+
+We can write python code in RMarkdown as well. We will run our analysis in Python since the R tools used for tensorflow are out dated.
+
+Our model function defines `epochs` which are **loops over our data** and our `activation function` which decides if a neuron should be activated or not. This activation function is set to `relu` or **Rectified Linear Unit**. 
+
+We also have a **dropout parameter** which is tunable to prevent overfitting. Here for a `dropout = 0.4`, we are saying that `40%` of the activtations from the prvious layer are randomly set to zero. 
+
+We also have `batch_size` which tell our epochs how many samples to. Small batches and large batches have trade-offs. Batch size of 32 is a popular default.
+```{python}
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# Load preprocessed data
+x = pd.read_csv("x.csv").values.astype('float32')
+y = pd.read_csv("y.csv").values.astype('float32').reshape(-1)
+
+# Train/test split
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
+
+# Build model
+model = keras.Sequential([
+    layers.Dense(50, activation='relu', input_shape=(x.shape[1],)),
+    layers.Dropout(0.4),
+    layers.Dense(1)  # regression output
+])
+
+model.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
+
+# Train model
+history = model.fit(
+    x_train, y_train,
+    epochs=1500,
+    batch_size=32,
+    validation_data=(x_test, y_test),
+    verbose=0  # Suppress console spam
+)
+
+# Evaluate
+test_mae = model.evaluate(x_test, y_test, verbose=0)[1]
+print(f"Test MAE: {test_mae:.2f}")
+```
+We see a Mean Absolute Error of ~250 for 1500 epochs.
+
+```{python}
+
+import matplotlib.pyplot as plt
+
+plt.plot(history.history['mae'], label='Train MAE')
+plt.plot(history.history['val_mae'], label='Validation MAE')
+plt.xlabel("Epochs")
+plt.ylabel("Mean Absolute Error")
+plt.title("Training vs Validation MAE")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+```
+
+
+# Multilayer Neural Network
+
+## Load the MNIST dataset
+This dataset consists of handwritten digits. The goal of our model is to predict what digits those drawing represent.
+
+```{python}
+# Load the MNIST digit dataset (60,000 train, 10,000 test)
+mnist = keras.datasets.mnist
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+# Preprocess the data
+# Flatten 28x28 images to 784-length vectors
+x_train = x_train.reshape(-1, 784).astype("float32") / 255.0
+x_test = x_test.reshape(-1, 784).astype("float32") / 255.0
+
+# One-hot encode the labels for softmax classification
+y_train_cat = keras.utils.to_categorical(y_train, 10)
+y_test_cat = keras.utils.to_categorical(y_test, 10)
+```
+
+## Define the Multilayer Neural Network
+
+We will use the `relu` activation function again. We will use the 40% dropout for the first layer, and 30% dropout for the second layer. Finally, we will use the `softmax` function for the final layer. 
+```{python}
+model = keras.Sequential([
+    layers.Dense(256, activation="relu", input_shape=(784,)),
+    layers.Dropout(0.4),  # Drop 40% of neurons during training for regularization
+    layers.Dense(128, activation="relu"),
+    layers.Dropout(0.3),
+    layers.Dense(10, activation="softmax")  # Final layer: 10 classes for digits 0-9
+])
+```
+
+## Compile the Model
+```{python}
+model.compile(
+    optimizer="rmsprop",
+    loss="categorical_crossentropy",
+    metrics=["accuracy"]
+)
+```
+
+## Train the Model
+
+We will use 30 epochs (less since we have so much more data to loop through). With a reasonably high batch size of 128. We will use 20% of our data for validation.
+
+```{python}
+history = model.fit(
+    x_train, y_train_cat,
+    epochs=30,
+    batch_size=128,
+    validation_split=0.2,
+    verbose=0  # suppress batch logs for cleaner RMarkdown output
+)
+```
+
+## Plot the accuracy and get evaluation metrics
+
+```{python}
+# Plot training and validation accuracy
+plt.plot(history.history["accuracy"], label="Training accuracy")
+plt.plot(history.history["val_accuracy"], label="Validation accuracy")
+plt.title("Training vs Validation Accuracy")
+plt.xlabel("Epoch")
+plt.ylabel("Accuracy")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Evaluate the model on the test data
+test_loss, test_acc = model.evaluate(x_test, y_test_cat, verbose=0)
+print(f"Test Accuracy: {test_acc:.4f}")
+
+pred_classes = model.predict(x_test).argmax(axis=1)
+#manual_acc = accuracy_score(y_test, pred_classes)
+```
+
+## Visualize the predictions by image
+
+```{python}
+# Select 16 random test digits to visualize
+num_images = 16
+indices = np.random.choice(len(x_test), num_images, replace=False)
+images = x_test[indices].reshape(-1, 28, 28)
+true_labels = y_test[indices]
+predicted_labels = pred_classes[indices]
+
+# Plot images with predicted and true labels
+plt.figure(figsize=(10, 10))
+for i in range(num_images):
+    plt.subplot(4, 4, i + 1)
+    plt.imshow(images[i], cmap="gray")
+    plt.title(f"Pred: {predicted_labels[i]}, True: {true_labels[i]}")
+    plt.axis("off")
+plt.tight_layout()
+plt.suptitle("MNIST Predictions vs True Labels", y=1.05)
+plt.show()
+```

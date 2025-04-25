@@ -1,0 +1,143 @@
+---
+title: "Classification Addition"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(class)
+library(ISLR2)
+library(tidyverse)
+```
+
+#K-Nearest Neighbor Classification + K-Means Clustering
+
+## 1. Introduction
+For this example, we use the `SMarket` datasets which contains stock market data between 2001-2005.
+
+## 2. Data Import and Train/Test Set Segmentation
+```{r}
+data("Smarket")
+smarket.tbl = as_tibble(Smarket)
+set.seed(123)
+
+# Segment Data
+train = smarket.tbl %>% filter(Year < 2005) #Training data before 2005
+test = smarket.tbl %>% filter(Year == 2005) #Testing on 2005 data
+
+# Define predictors and response
+train.X = train %>% select(Lag1, Lag2) %>% as.matrix()
+test.X = test %>% select(Lag1, Lag2) %>% as.matrix()
+train.Y = train$Direction
+test.Y = test$Direction
+```
+
+## 3. Train and Predict via KNN
+```{r}
+knn.pred = knn(train.X, test.X, train.Y, k = 3) #define k=3
+```
+
+## 4. Evaluate Performance
+```{r}
+conf.matrix = table(Predicted = knn.pred, Actual = test.Y)
+print(conf.matrix)
+
+
+#Compute accuracy
+accuracy = mean(knn.pred == test.Y)
+print(paste("Accuracy:", round(accuracy, 4)))
+```
+
+## 5. Experiment with Different K Values
+```{r}
+knn.pred_4 = knn(train.X, test.X, train.Y, k = 4)
+mean(knn.pred_4 == test.Y)
+
+knn.pred_5 = knn(train.X, test.X, train.Y, k = 5)
+mean(knn.pred_5 == test.Y)
+
+knn.pred_6 = knn(train.X, test.X, train.Y, k = 6)
+mean(knn.pred_6 == test.Y)
+```
+
+## 6. Plot Across Different K Values
+```{r}
+train.X = scale(train.X)
+test.X = scale(test.X)
+# Function to compute average error for a given K over multiple iterations
+compute_avg_error = function(k, num_iter = 50) {
+  errors = replicate(num_iter, {
+    knn_pred = knn(train.X, test.X, train.Y, k = k)
+    mean(knn_pred != test.Y)  # Misclassification Error
+  })
+  mean(errors)  # Return the average error across iterations
+}
+
+# Compute error for different values of K with multiple iterations
+#set.seed(123)  # For reproducibility
+k_values = tibble(K = seq(1, 20, by = 1)) %>%
+  mutate(Avg_Error_Rate = map_dbl(K, ~ compute_avg_error(.x, num_iter = 100)))  # Run KNN 100 times per K
+
+# Plot the averaged error rates
+ggplot(k_values, aes(x = K, y = Avg_Error_Rate)) +
+  geom_line(color = "blue") +
+  geom_point(size = 2) +
+  theme_minimal() +
+  labs(title = "Figure looking for Optimal K in KNN (Averaged Over 100 Runs)",
+       x = "Number of Neighbors (K)",
+       y = "Average Misclassification Error Rate")
+```
+
+# K-Means Clustering Data
+## 1. Build Data
+```{r}
+x.tbl = tibble(
+  X1 = rnorm(50),
+  X2 = rnorm(50)
+)
+
+x.tbl = x.tbl %>%
+  mutate(X1 = ifelse(row_number() <= 25, X1 + 3, X1),
+         X2 = ifelse(row_number() <= 25, X2 - 4, X2))
+```
+## 2. Apply K-Means Clustering
+```{r}
+km.out = kmeans(x.tbl, centers = 4, nstart = 20) #run algo 20 times, looking for 2 groups
+
+x.tbl = x.tbl %>% 
+  mutate(Cluster = as.factor(km.out$cluster))
+```
+
+## 3. Vizualize Clustering
+```{r}
+ggplot(x.tbl, aes(x = X1, y = X2, color = Cluster)) +
+  geom_point(size = 3) +
+  theme_minimal() +
+  labs(title = "K-Means Clustering Results")
+```
+
+## 4. Choosing Optimal K (Elbow Method)
+
+What to do if no clear elbow?
+
+Clusters Are Not Well-Separated
+	•	If your data does not naturally contain distinct clusters, K-means will continue dividing the data into finer groups, reducing WSS with each increase in K.
+	•	This happens if your data is more uniformly distributed rather than having well-defined cluster structures.
+	2.	Too Much Noise or Overlapping Data
+	•	If the data has a lot of noise or outliers, it may not have distinct groups, causing WSS to decrease steadily without forming a clear elbow.
+	•	Consider preprocessing your data by removing outliers or reducing dimensionality with PCA.
+
+```{r}
+wss = tibble(K = 1:20) %>%
+  mutate(Total_WSS = map_dbl(K, ~ kmeans(x.tbl %>% select(X1, X2), centers = .x, nstart = 20)$tot.withinss))
+
+ggplot(wss, aes(x = K, y = Total_WSS)) +
+  geom_line() + 
+  geom_point() +
+  scale_x_continuous(breaks = 1:20) +  # Set discrete x-ticks for K (1 to 10)
+  theme_minimal() +
+  labs(title = "Elbow Method for Optimal K",
+       x = "Number of Clusters (K)", y = "Total Within-Cluster Sum of Squares")
+```

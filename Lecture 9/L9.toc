@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{Review Final Project Rubric}{3}{0}{1}
+\beamer@sectionintoc {2}{Overview}{4}{0}{2}
+\beamer@sectionintoc {3}{Principal Component Analysis (PCA)}{6}{0}{3}
+\beamer@subsectionintoc {3}{1}{USArrests Data}{8}{0}{3}
+\beamer@sectionintoc {4}{Missing Values \& Matrix Completion}{12}{0}{4}

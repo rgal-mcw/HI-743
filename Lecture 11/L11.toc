@@ -1,0 +1,8 @@
+\beamer@sectionintoc {1}{The Art of Machine Learning}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{CRISP-DM / Project Structure Review}{4}{0}{1}
+\beamer@subsectionintoc {1}{2}{Review of Key Concepts in Predictive Modeling}{8}{0}{1}
+\beamer@sectionintoc {2}{Case Study: Customer Churn}{13}{0}{2}
+\beamer@subsectionintoc {2}{1}{Identify the Problem}{15}{0}{2}
+\beamer@subsectionintoc {2}{2}{Create a Question}{18}{0}{2}
+\beamer@subsectionintoc {2}{3}{Data Curation}{22}{0}{2}
+\beamer@subsectionintoc {2}{4}{Data Quality}{25}{0}{2}

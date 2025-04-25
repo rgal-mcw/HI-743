@@ -1,0 +1,168 @@
+---
+title: "Lecture 5 - Linear Regression"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Boston Dataset Analysis
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ISLR2)
+library(broom)
+```
+
+## Objective
+
+\<What are we analyzing? Why? What insight can we gain from this?\>
+
+## Data Understanding & Preperation
+
+\<What kinds of variables do we have? What kind of questions can we answer with this data?\>
+
+### Data Loading
+
+\<What does the summary say about this data?\>
+
+```{r data prep}
+data(Boston)
+Boston = as_tibble(Boston) #Tidyverse dataframe
+
+glimpse(Boston)
+summary(Boston)
+
+missing_values = Boston %>%
+  summarise(across(everything(), ~ sum(is.na(.))))
+print(missing_values)
+```
+
+### Train-Test Split
+
+\<This is a machine learning technique. How does it aid our analysis?\>
+
+```{r train-test split}
+set.seed(123)  # For reproducibility
+Boston_split = Boston %>%
+  mutate(id = row_number()) %>%
+  sample_frac(0.75)
+
+Boston = Boston %>% mutate(id = row_number())
+
+train_data = Boston_split
+test_data = anti_join(Boston, Boston_split, by = "id")  
+```
+
+### Exploratory Data Analysis
+
+\<What figures did you build? What information do they convey?\>
+
+```{r figures}
+ggplot(Boston, aes(x = medv)) +
+  geom_histogram(binwidth = 2, fill = "steelblue", color = "white") +
+  labs(title = "Distribution of Median Home Values", x = "Median Value ($1000s)", y = "Count")
+
+ggplot(Boston, aes(x = lstat, y = medv)) +
+  geom_point(alpha = 0.6, color = "blue") +
+  labs(title = "Scatter Plot: LSTAT vs MEDV", x = "% Lower Status Population", y = "Median Home Value ($1000s)")
+```
+
+## Model Implementation & Explanation
+
+\<What model are we using? Why does this/these model(s) apply to this data? What are the pros & cons of this type of model? What more can you explain about this model implementation?\>
+
+### Perform Simple Linear Regression on Training Data
+
+\<What is this function? How does it work? What model evaluations do we get from the summary?\>
+
+```{r lm on training}
+lm_fit = lm(medv ~ lstat, data = train_data)
+summary(lm_fit)
+```
+
+### Apply Model to Test Data
+
+\<What does the test mse say about this model?\>
+
+```{r test data}
+train_mse = mean((train_data$medv - predict(lm_fit, train_data))^2)
+test_mse = mean((test_data$medv - predict(lm_fit, test_data))^2)
+
+print(paste("Training MSE:", round(train_mse, 2)))
+print(paste("Test MSE:", round(test_mse, 2)))
+```
+
+### Simple Linear Regression Results & Interpretation
+
+\<Overall, how good is this fit? What does it say about the data, and the question being asked?\>
+
+### Perform Multiple Linear Regression on Training Data
+
+\<What question does this model answer?\>
+
+```{r multiple regression training}
+lm_fit2 = lm(medv ~ lstat + age, data = train_data)
+summary(lm_fit2)
+```
+
+### Apply Model to Test Data
+
+\<What does the test mse say about our fit?\>
+
+```{r multiple regression test}
+train_mse2 = mean((train_data$medv - predict(lm_fit2, train_data))^2)
+test_mse2 = mean((test_data$medv - predict(lm_fit2, test_data))^2)
+
+print(paste("Training MSE:", round(train_mse2, 2)))
+print(paste("Test MSE:", round(test_mse2, 2)))
+```
+
+### Multiple Linear Regression Results & Interpretation
+
+# NHANES Dataset Analysis
+
+## Objective
+
+**Please predict BMI using predictors Age, SmokeNow, and PhysActive**
+
+\<What are we analyzing? Why? What insight can we gain from this?\>
+
+## Data Understanding & Preperation
+
+\<What kinds of variables do we have? What kind of questions can we answer with this data?\>
+
+### Data Loading
+
+\<What does the summary say about this data?\>
+
+```{r load NHANES}
+library(NHANES)
+data(NHANES)
+SMOKERS <- NHANES %>%
+  select(BMI, Age, SmokeNow, PhysActive) %>%
+  drop_na() %>%
+  filter(Age >= 18 & Age <= 70) %>%
+  mutate(
+    SmokeNow = as.factor(SmokeNow),
+    PhysActive = as.factor(PhysActive)
+  )
+
+
+```
+
+### Train-Test Split
+
+\<This is a machine learning technique. How does it aid our analysis?\>
+
+### Exploratory Data Analysis
+
+\<What figures did you build? What information do they convey?\>
+
+## Model Implementation & Explanation
+
+\<What model are you using? Why does this/these model(s) apply to this data? What are the pros & cons of this type of model? What more can you explain about this model implementation?\>
+
+## Results and Interpretation
+
+\< What is our interpretation of the model you'be built? How have you answered the question posed? \>

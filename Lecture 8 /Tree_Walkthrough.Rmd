@@ -1,0 +1,115 @@
+---
+title: "Decision Trees"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tree)
+library(ISLR2) # Data package from ISLR2
+```
+
+#1 Classification Trees
+
+## 1.1 Fitting a Classification Tree
+
+```{r}
+# Load data and convert Sales into binary (High: Yes/No)
+attach(Carseats)
+High = factor(ifelse(Sales <= 8, "No", "Yes"))
+Carseats = data.frame(Carseats, High)
+
+# Fit classification tree
+tree.carseats = tree(High ~ . - Sales, data = Carseats)
+summary(tree.carseats)
+```
+
+## 1.2 Visualizing the Tree
+
+```{r}
+plot(tree.carseats)
+text(tree.carseats, pretty=0)
+```
+
+## 1.3 Evaluating Performance
+
+Split into training and test sets. Assess test accuracy. 
+
+```{r}
+train = sample(1:nrow(Carseats), 200)
+Carseats.test = Carseats[-train, ]
+High.test = High[-train]
+
+# Train model
+tree.carseats = tree(High ~ . - Sales, data = Carseats, subset = train)
+tree.pred = predict(tree.carseats, Carseats.test, type = "class")
+
+# Confusion matrix
+table(tree.pred, High.test)
+
+# Compute accuracy
+mean(tree.pred == High.test)
+```
+
+# 2. Pruning Trees
+Using cross-validation (cv.tree) to determine the optimal number of nodes.
+```{r}
+cv.carseats = cv.tree(tree.carseats, FUN = prune.misclass)
+plot(cv.carseats$size, cv.carseats$dev, type = "b", xlab="Tree Size", ylab="Cross-validation Error")
+
+# Prune tree
+prune.carseats = prune.misclass(tree.carseats, best=9)
+plot(prune.carseats)
+text(prune.carseats, pretty=0)
+
+# Re-evaluate performance
+tree.pred = predict(prune.carseats, Carseats.test, type = "class")
+table(tree.pred, High.test)
+mean(tree.pred == High.test)
+
+```
+
+# 3. Regression Trees
+We fit a regression tree to the Boston housing data to predict median house value (medv).
+```{r}
+# Load Boston dataset
+set.seed(1)
+train <- sample(1:nrow(Boston), nrow(Boston) / 2)
+tree.boston <- tree(medv ~ ., data = Boston, subset = train)
+summary(tree.boston)
+
+# Visualize tree
+plot(tree.boston)
+text(tree.boston, pretty=0)
+
+# Test MSE
+yhat <- predict(tree.boston, newdata = Boston[-train, ])
+mean((yhat - Boston$medv[-train])^2)
+```
+
+## 3.1 Prune the Regression Tree
+```{r}
+cv.boston <- cv.tree(tree.boston, FUN = prune.tree)
+
+# Plot the cross-validation results
+plot(cv.boston$size, cv.boston$dev, type = "b", xlab = "Tree Size", ylab = "Cross-validation Error")
+
+# Prune the tree at optimal size (let's say best = 5 based on the plot)
+prune.boston <- prune.tree(tree.boston, best = 5)
+
+# Visualize the pruned tree
+plot(prune.boston)
+text(prune.boston, pretty = 0)
+
+# Evaluate performance on test set
+yhat.prune <- predict(prune.boston, newdata = Boston[-train, ])
+prune.mse <- mean((yhat.prune - Boston$medv[-train])^2)
+
+# Compare with unpruned tree MSE
+unpruned.mse <- mean((yhat - Boston$medv[-train])^2)
+
+cat("MSE of Pruned Tree:", prune.mse, "\n")
+cat("MSE of Unpruned Tree:", unpruned.mse, "\n")
+```

@@ -1,0 +1,10 @@
+\beamer@sectionintoc {1}{Introduction to Data Exploration}{3}{0}{1}
+\beamer@sectionintoc {2}{Data Quality Report}{6}{0}{2}
+\beamer@sectionintoc {3}{Getting to Know the Data}{14}{0}{3}
+\beamer@subsectionintoc {3}{1}{The Normal Distribution}{16}{0}{3}
+\beamer@sectionintoc {4}{Identifying Data Quality Issues}{20}{0}{4}
+\beamer@sectionintoc {5}{Handling Data Quality Issues}{24}{0}{5}
+\beamer@sectionintoc {6}{Advanced Data Exploration}{28}{0}{6}
+\beamer@sectionintoc {7}{Lab}{35}{0}{7}
+\beamer@subsectionintoc {7}{1}{GitHub Introduction}{35}{0}{7}
+\beamer@subsectionintoc {7}{2}{Data Exploration \& Tidyverse}{38}{0}{7}

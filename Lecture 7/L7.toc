@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{K-Nearest Neighbors}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Algorithm}{4}{0}{1}
+\beamer@subsectionintoc {1}{2}{KNN Example}{5}{0}{1}
+\beamer@subsectionintoc {1}{3}{Choosing K}{7}{0}{1}
+\beamer@sectionintoc {2}{K-Means Clustering}{10}{0}{2}
+\beamer@subsectionintoc {2}{1}{Algorithm}{10}{0}{2}
+\beamer@subsectionintoc {2}{2}{Evaluation}{13}{0}{2}

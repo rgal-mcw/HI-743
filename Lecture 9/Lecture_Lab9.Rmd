@@ -1,0 +1,145 @@
+---
+title: "Unsupervised Learning"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Perform PCA
+```{r}
+library(ISLR2)
+
+# Understand dataset
+states = row.names(USArrests)
+names(USArrests)
+
+# Explore averages
+apply(USArrests, 2, mean)
+apply(USArrests, 2, var)
+
+# Perform Principal Component Analysis (PCA)
+pr.out = prcomp(USArrests, scale=TRUE)
+
+# Exploring the PCA object
+names(pr.out)
+pr.out$scale
+```
+
+## Analyze PCA Results
+
+```{r}
+pr.out$rotation #See loadings
+
+pr.out$x
+
+# Plot the PCA
+biplot(pr.out, scale=0)
+
+# Get Sdev 
+pr.out$sdev
+```
+
+### Calculate Proportion of Variance Explained
+```{r}
+pr.var = (pr.out$sdev)^2
+pve = pr.var / sum(pr.var)
+
+plot(pve, xlab="Principal Component", ylab = "Proportion of Variance Explained", 
+     ylim = c(0,1), type='b')
+```
+
+```{r}
+plot(cumsum(pve), xlab = "Principal Component", ylab = "Cumulative Proportion of Variance Explained", ylim=c(0,1), type='b')
+
+```
+
+# Clustering
+```{r}
+set.seed(2)
+x = matrix(rnorm(50 * 2), ncol=2)
+
+# Shift the first 25 points to form a cluster
+x[1:25, 1] = x[1:25, 1] + 3
+x[1:25, 2] = x[1:25, 2] - 4
+
+## Apply K-Means Clustering with K=2 clusters
+km.out = kmeans(x, 2, nstart=20)
+km.out$cluster
+
+# Plot results
+par(mfrow = c(1,2))
+plot(x, col = (km.out$cluster + 1), main = "K-Means Clustering w. K=2", xlab='', ylab='',
+     pch = 20, cex = 2)
+```
+
+```{r}
+set.seed(4)
+km.out = kmeans(x, 3, nstart=20)
+km.out
+
+plot(x, col =(km.out$cluster) + 1, main = "K-Means Clustering Results with K=3", xlab="", ylab="", pch=20, cex=2)
+```
+
+## Heirarchical Clustering
+
+```{r}
+hc.complete = hclust(dist(x), method="complete")
+hc.average = hclust(dist(x), method="average")
+hc.single = hclust(dist(x), method="single")
+
+plot(hc.complete, main="Complete Linkage", xlab='', ylab='')
+plot(hc.average, main="Average Linkage", xlab='', ylab='')
+plot(hc.single, main="Single Linkage", xlab="", ylab="")
+```
+
+```{r}
+# Cut the dendrogram into clusters
+cutree(hc.complete, 2)
+cutree(hc.average, 2)
+cutree(hc.single, 4)
+```
+
+
+## NCI60 Gene Expression Example
+```{r}
+nci.labs = NCI60$labs
+nci.data = NCI60$data
+
+dim(nci.data)
+```
+
+```{r}
+nci.labs[1:4]
+table(nci.labs)
+```
+
+```{r}
+data.pca = prcomp(nci.data, scale=T)
+
+Cols = function(vec) {
+  cols = rainbow(length(unique(vec)))
+  return(cols[as.numeric(as.factor(vec))])
+}
+
+plot(data.pca$x[, 1:2], col = Cols(nci.labs), pch = 19, xlab = "PC1", ylab="PC2")
+```
+
+```{r}
+summary(data.pca)
+
+pve = 100 * data.pca$sdev^2 / (sum(data.pca$sdev^2))
+
+plot(pve, type="o", ylab="PVE", xlab="Principal Compnent", col="blue")
+plot(cumsum(pve), type="o", ylab="Cumulative PVE", xlab="Prinicpal Component", col="brown")
+```
+
+```{r}
+sd.data = scale(nci.data)
+hc.out = hclust(dist(sd.data))
+
+plot(hc.out, labels = nci.labs)
+```

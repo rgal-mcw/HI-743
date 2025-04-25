@@ -1,0 +1,154 @@
+---
+title: "Linear Regression in R"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+#install.packages("ISLR2")
+library(ISLR2)
+```
+
+# Boston Dataset Analysis
+
+### Objective
+
+How can we predict the Median Value of Owner-Cccupied Homes using the Lower Status of Population metric.
+
+\<What are we analyzing? Why? What insight can we gain from this analysis?\>
+
+### Data Understand & Preperation
+
+\<What kind of variables do we have? What potential questions could we answer further with this data?\>
+
+### Data Exploration
+
+\<What do the summaries say about our data?\>
+
+```{r load.data}
+data(Boston)
+glimpse(Boston)
+
+summary(Boston)
+```
+
+```{r missing values}
+missing_values = Boston %>%
+  summarise(across(everything(), ~ sum(is.na(.))))
+print(missing_values)
+```
+
+### Train-Test Split
+
+\<How does this technique aid our analysis, especially given new data?\>
+
+```{r train-test}
+set.seed(123) # For reproducibility
+Boston_split = Boston %>%
+  mutate(id = row_number()) %>%
+  sample_frac(0.75)
+
+Boston = Boston %>% mutate(id = row_number())
+
+train_data = Boston_split
+test_data = anti_join(Boston, Boston_split, by = "id") #Remaining 25%
+
+```
+
+### Exploratory Data Analysis
+
+\<What figures did we build? Why? What information do they convey? How is it important to the analysis?\>
+
+```{r histogram for medv}
+ggplot(Boston, aes(x = medv)) +
+  geom_histogram(fill = "steelblue", binwidth = 2, color = "white") + 
+  labs(title = "Distribution of Median Home Values",
+       x = "Median Value ($1000s)",
+       y = "Count")
+```
+
+```{r LSTAT vs MEDV Scatterplot}
+ggplot(Boston, aes(x = lstat, y=medv)) +
+  geom_point(alpha = 0.6, color = 'blue') +
+  labs(title = "Scatterplot: LSTAT vs. MEDV",
+       x = "% Lower Status Population",
+       y = "Median Home Value ($1000s)")
+```
+
+### Model Implementation & Explanation
+
+\<What model are we using? Why does this/these model(s) apply to the data? What are the pros & cons of this type of model? \>
+
+#### Perform Simple Linear Regression on Training Data
+
+\<Describe the function & model fit. Maybe talk about the evaluation metrics?\>
+
+```{r linear regression}
+lm.fit = lm(medv ~ lstat, data = train_data)
+summary(lm.fit)
+```
+
+Could build a scatter plot with this regression line onto it.
+
+### Apply Model to Test Data
+
+\<Could interpret the Test MSE\>
+
+```{r apply model to test_data}
+train_mse = mean((train_data$medv - predict(lm.fit, train_data))^2)
+test_mse = mean((test_data$medv - predict(lm.fit, test_data))^2)
+
+print(paste("Training MSE:", round(train_mse, 2)))
+print(paste("Test MSE:", round(test_mse, 2)))
+```
+
+### Simple Linear Regression Results & Interpretation
+
+\<Overall, how good is this fit? What does it say about the data and the question being asked?\>
+
+### Perform Multiple Linear Regression on Training Data
+
+\<What question does this model answer?\>
+
+```{r}
+lm.multiple.fit = lm(medv ~ lstat + age, data=train_data)
+summary(lm.multiple.fit)
+```
+
+### Apply the Model to Test Data
+
+```{r}
+train_mse = mean((train_data$medv - predict(lm.multiple.fit, train_data))^2)
+test_mse = mean((test_data$medv - predict(lm.multiple.fit, test_data))^2)
+
+print(paste("Training MSE:", round(train_mse, 2)))
+print(paste("Test MSE:", round(test_mse, 2)))
+```
+
+### Multiple Linear Regression Results & Interpretation
+
+\<Interpretation\>
+
+# NHANES Data Analysis
+
+## Objective
+
+**Please predict BMI using Age, SmokeNow, PhysActive for individuals between the ages of 18 and 70**
+
+## Data Understanding & Preperation
+
+### Data Loading
+
+```{r}
+#install.packages("NHANES")
+library(NHANES)
+data(NHANES)
+
+SMOKERS = NHANES %>% 
+  select(BMI, Age, SmokeNow, PhysActive) %>%
+  filter(Age >= 18 & Age <= 70)
+```

@@ -1,0 +1,83 @@
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\slideentry {0}{0}{2}{2/2}{}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\beamer@sectionpages {1}{2}}
+\headcommand {\beamer@subsectionpages {1}{2}}
+\headcommand {\sectionentry {1}{Classification Intro}{3}{Classification Intro}{0}}
+\headcommand {\slideentry {1}{0}{1}{3/3}{}{0}}
+\headcommand {\beamer@framepages {3}{3}}
+\headcommand {\slideentry {1}{0}{2}{4/4}{}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\slideentry {1}{0}{3}{5/5}{}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\beamer@sectionpages {3}{5}}
+\headcommand {\beamer@subsectionpages {3}{5}}
+\headcommand {\sectionentry {2}{Logistic Regression}{6}{Logistic Regression}{0}}
+\headcommand {\beamer@subsectionpages {6}{5}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{6}{Logistic Regression}}
+\headcommand {\slideentry {2}{1}{1}{6/6}{Logistic Regression}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\slideentry {2}{1}{2}{7/7}{Logistic Regression}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\beamer@subsectionpages {6}{7}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{8}{Interpretation}}
+\headcommand {\slideentry {2}{2}{1}{8/8}{Interpretation}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\slideentry {2}{2}{2}{9/9}{Interpretation}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\slideentry {2}{2}{3}{10/10}{Interpretation}{0}}
+\headcommand {\beamer@framepages {10}{10}}
+\headcommand {\slideentry {2}{2}{4}{11/11}{Interpretation}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\beamer@subsectionpages {8}{11}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{12}{Output}}
+\headcommand {\slideentry {2}{3}{1}{12/12}{Output}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\slideentry {2}{3}{2}{13/13}{Output}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\slideentry {2}{3}{3}{14/14}{Output}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\beamer@subsectionpages {12}{14}}
+\headcommand {\beamer@subsectionentry {0}{2}{4}{15}{Model Evaluation}}
+\headcommand {\slideentry {2}{4}{1}{15/15}{Model Evaluation}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\slideentry {2}{4}{2}{16/16}{Model Evaluation}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\slideentry {2}{4}{3}{17/17}{Model Evaluation}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\beamer@sectionpages {6}{17}}
+\headcommand {\beamer@subsectionpages {15}{17}}
+\headcommand {\sectionentry {3}{Multiple Logistic Regression}{18}{Multiple Logistic Regression}{0}}
+\headcommand {\beamer@subsectionpages {18}{17}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{18}{Multiple Logistic Regression}}
+\headcommand {\slideentry {3}{1}{1}{18/18}{Multiple Logistic Regression}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\beamer@subsectionpages {18}{18}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{19}{Example}}
+\headcommand {\slideentry {3}{2}{1}{19/19}{Example}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\beamer@subsectionpages {19}{19}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{20}{Interpretation}}
+\headcommand {\slideentry {3}{3}{1}{20/20}{Interpretation}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\beamer@sectionpages {18}{20}}
+\headcommand {\beamer@subsectionpages {20}{20}}
+\headcommand {\sectionentry {4}{Multinomial Logistic Regression}{21}{Multinomial Logistic Regression}{0}}
+\headcommand {\beamer@subsectionpages {21}{20}}
+\headcommand {\beamer@subsectionentry {0}{4}{1}{21}{Multinomial Logistic Regression}}
+\headcommand {\slideentry {4}{1}{1}{21/21}{Multinomial Logistic Regression}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\beamer@subsectionpages {21}{21}}
+\headcommand {\beamer@subsectionentry {0}{4}{2}{22}{Example}}
+\headcommand {\slideentry {4}{2}{1}{22/22}{Example}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\beamer@subsectionpages {22}{22}}
+\headcommand {\beamer@subsectionentry {0}{4}{3}{23}{Interpretation}}
+\headcommand {\slideentry {4}{3}{1}{23/23}{Interpretation}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\beamer@partpages {1}{23}}
+\headcommand {\beamer@subsectionpages {23}{23}}
+\headcommand {\beamer@sectionpages {21}{23}}
+\headcommand {\beamer@documentpages {23}}
+\headcommand {\gdef \inserttotalframenumber {23}}

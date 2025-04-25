@@ -1,0 +1,15 @@
+\frametitle{Objects in R}
+There are many \textit{types} of objects that we can assign values to. For instance, we can create a \textit{character} type variable. \\
+
+\begin{center}
+\begin{lstlisting}[language=R]
+    > my_obj2 = "R is cool"
+    > my_obj2
+    ## [1] "R is cool"
+    \end{lstlisting}
+\end{center}
+\begin{center}
+\includegraphics[scale=0.4]{images/env_cool.png}
+\end{center}
+Notice that we have enclosed the string in quotes. If you forget to use the quotes you will receive an error message. \\
+

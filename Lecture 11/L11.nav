@@ -1,0 +1,103 @@
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\slideentry {0}{0}{2}{2/2}{}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\beamer@sectionpages {1}{2}}
+\headcommand {\beamer@subsectionpages {1}{2}}
+\headcommand {\sectionentry {1}{The Art of Machine Learning}{3}{The Art of Machine Learning}{0}}
+\headcommand {\slideentry {1}{0}{1}{3/3}{}{0}}
+\headcommand {\beamer@framepages {3}{3}}
+\headcommand {\beamer@subsectionpages {3}{3}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{4}{CRISP-DM / Project Structure Review}}
+\headcommand {\slideentry {1}{1}{1}{4/4}{CRISP-DM / Project Structure Review}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\slideentry {1}{1}{2}{5/5}{CRISP-DM / Project Structure Review}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\slideentry {1}{1}{3}{6/6}{CRISP-DM / Project Structure Review}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\slideentry {1}{1}{4}{7/7}{CRISP-DM / Project Structure Review}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\beamer@subsectionpages {4}{7}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{8}{Review of Key Concepts in Predictive Modeling}}
+\headcommand {\slideentry {1}{2}{1}{8/8}{Review of Key Concepts in Predictive Modeling}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\slideentry {1}{2}{2}{9/9}{Review of Key Concepts in Predictive Modeling}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\slideentry {1}{2}{3}{10/10}{Review of Key Concepts in Predictive Modeling}{0}}
+\headcommand {\beamer@framepages {10}{10}}
+\headcommand {\slideentry {1}{2}{4}{11/11}{Review of Key Concepts in Predictive Modeling}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\slideentry {1}{2}{5}{12/12}{Review of Key Concepts in Predictive Modeling}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\beamer@sectionpages {3}{12}}
+\headcommand {\beamer@subsectionpages {8}{12}}
+\headcommand {\sectionentry {2}{Case Study: Customer Churn}{13}{Case Study: Customer Churn}{0}}
+\headcommand {\slideentry {2}{0}{1}{13/13}{}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\slideentry {2}{0}{2}{14/14}{}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\beamer@subsectionpages {13}{14}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{15}{Identify the Problem}}
+\headcommand {\slideentry {2}{1}{1}{15/15}{Identify the Problem}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\slideentry {2}{1}{2}{16/16}{Identify the Problem}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\slideentry {2}{1}{3}{17/17}{Identify the Problem}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\beamer@subsectionpages {15}{17}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{18}{Create a Question}}
+\headcommand {\slideentry {2}{2}{1}{18/18}{Create a Question}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\slideentry {2}{2}{2}{19/19}{Create a Question}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\slideentry {2}{2}{3}{20/20}{Create a Question}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\slideentry {2}{2}{4}{21/21}{Create a Question}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\beamer@subsectionpages {18}{21}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{22}{Data Curation}}
+\headcommand {\slideentry {2}{3}{1}{22/22}{Data Curation}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\slideentry {2}{3}{2}{23/23}{Data Curation}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\slideentry {2}{3}{3}{24/24}{Data Curation}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\beamer@subsectionpages {22}{24}}
+\headcommand {\beamer@subsectionentry {0}{2}{4}{25}{Data Quality}}
+\headcommand {\slideentry {2}{4}{1}{25/25}{Data Quality}{0}}
+\headcommand {\beamer@framepages {25}{25}}
+\headcommand {\slideentry {2}{4}{2}{26/26}{Data Quality}{0}}
+\headcommand {\beamer@framepages {26}{26}}
+\headcommand {\slideentry {2}{4}{3}{27/27}{Data Quality}{0}}
+\headcommand {\beamer@framepages {27}{27}}
+\headcommand {\slideentry {2}{4}{4}{28/28}{Data Quality}{0}}
+\headcommand {\beamer@framepages {28}{28}}
+\headcommand {\slideentry {2}{4}{5}{29/29}{Data Quality}{0}}
+\headcommand {\beamer@framepages {29}{29}}
+\headcommand {\slideentry {2}{4}{6}{30/30}{Data Quality}{0}}
+\headcommand {\beamer@framepages {30}{30}}
+\headcommand {\slideentry {2}{4}{7}{31/31}{Data Quality}{0}}
+\headcommand {\beamer@framepages {31}{31}}
+\headcommand {\slideentry {2}{4}{8}{32/32}{Data Quality}{0}}
+\headcommand {\beamer@framepages {32}{32}}
+\headcommand {\slideentry {2}{4}{9}{33/33}{Data Quality}{0}}
+\headcommand {\beamer@framepages {33}{33}}
+\headcommand {\slideentry {2}{4}{10}{34/34}{Data Quality}{0}}
+\headcommand {\beamer@framepages {34}{34}}
+\headcommand {\slideentry {2}{4}{11}{35/35}{Data Quality}{0}}
+\headcommand {\beamer@framepages {35}{35}}
+\headcommand {\slideentry {2}{4}{12}{36/36}{Data Quality}{0}}
+\headcommand {\beamer@framepages {36}{36}}
+\headcommand {\slideentry {2}{4}{13}{37/37}{Data Quality}{0}}
+\headcommand {\beamer@framepages {37}{37}}
+\headcommand {\slideentry {2}{4}{14}{38/38}{Data Quality}{0}}
+\headcommand {\beamer@framepages {38}{38}}
+\headcommand {\slideentry {2}{4}{15}{39/39}{Data Quality}{0}}
+\headcommand {\beamer@framepages {39}{39}}
+\headcommand {\slideentry {2}{4}{16}{40/40}{Data Quality}{0}}
+\headcommand {\beamer@framepages {40}{40}}
+\headcommand {\beamer@partpages {1}{40}}
+\headcommand {\beamer@subsectionpages {25}{40}}
+\headcommand {\beamer@sectionpages {13}{40}}
+\headcommand {\beamer@documentpages {40}}
+\headcommand {\gdef \inserttotalframenumber {40}}

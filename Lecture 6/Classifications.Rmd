@@ -1,0 +1,209 @@
+---
+title: "Classification Models"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(nnet)
+library(ISLR2)
+```
+
+# 1. Introduction
+
+\< Introduce the models being used \>
+
+# 2. Data
+
+\< Describe the data \>
+
+```{r}
+data = Default
+str(data)
+```
+
+## 2.1 Visualizing the Data
+
+### 2.1.1 Distribution of Balance
+
+\< What does this figure mean? \>
+
+```{r balance distribution}
+ggplot(data, aes(x = balance, fill=default)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = 'identity') +
+  labs(title = "Distribution of Balance by Default Status",
+       x = "Balance",
+       y = "Count")
+```
+
+### 2.1.2 Distribution of Income
+
+\< What does this figure mean? \>
+
+```{r}
+ggplot(data, aes(x = income, fill = default)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = 'identity') +
+  labs(title = "Distribution of Income by Default Status",
+       x = "Income",
+       y = "Count")
+```
+
+```{r}
+ggplot(data, aes(x = income, fill = student)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = 'identity') +
+  labs(title = "Distribution of Income by Default Status",
+       x = "Income",
+       y = "Count")
+```
+
+### 2.1.3 Student Status by Default
+
+```{r}
+ggplot(data, aes(x = student, fill = default)) +
+  geom_bar(position = 'dodge') +
+  labs(title = "Default Status by Student Status",
+       x = "Student",
+       y = "Count")
+```
+
+## 4. Logistic Regression
+
+### 4.1 Fitting the Model
+
+\< Describe Logistic Regression \>
+
+```{r}
+logit_model = glm(default ~ balance, data = data, family = binomial)
+summary(logit_model)
+```
+
+```{r}
+data$predicted_prob = predict(logit_model, type = "response")
+head(data)
+```
+
+### 4.2 Evaluate Model Performance
+
+\< Talk about our model and evaluation metrics \>
+
+```{r}
+threshold = 0.5
+data$predicted_default = ifelse(data$predicted_prob > threshold, "Yes", "No")
+conf_matrix = table(data$predicted_default, data$default)
+conf_matrix
+```
+
+```{r}
+accuracy = sum(diag(conf_matrix)) / sum(conf_matrix)
+accuracy
+```
+
+# 5 Multiple Logistic Regression
+
+## 5.1 Fitting the model
+
+Here, we will include an **interaction term** between `income` and `student` that allows the effect of `income` on `default` to differ between `student` and `non-student`.
+
+```{r}
+logit_mult_model = glm(default ~ balance + income * student, data=data, family=binomial)
+summary(logit_mult_model)
+```
+
+## 5.2 Evaluating the Model
+
+\< Talk about evaluation metrics / interpretation \>
+
+```{r}
+data$mult_predicted_prob = predict(logit_mult_model, type = "response")
+data$mult_predicted_default = ifelse(data$mult_predicted_prob > threshold, "Yes", "No")
+conf_matrix_mult = table(data$mult_predicted_default, data$default)
+conf_matrix_mult
+```
+
+```{r}
+accuracy_mult = sum(diag(conf_matrix_mult)) / sum(conf_matrix_mult)
+accuracy_mult
+```
+
+# 6. Multinomial Logistic Regression
+
+## 6.1 Load the Data
+
+```{r}
+data2 = Carseats
+data2$SalesCategory = cut(data2$Sales, breaks = 3, labels = c("Low", "Medium", "High"))
+```
+
+```{r}
+multi_model = multinom(SalesCategory ~ Price + Income + Advertising, data=data2)
+summary(multi_model)
+```
+
+## 6.2 Make Predictions
+
+```{r}
+data2$nomial_predicted_salesCat = predict(multi_model)
+head(data2)
+```
+
+## 6.3 Evaluate Model
+
+```{r}
+conf_matrix_multi = table(data2$nomial_predicted_salesCat, data2$SalesCategory)
+conf_matrix_multi
+```
+
+```{r}
+accuracy_multi = sum(diag(conf_matrix_multi)) / sum(conf_matrix_multi)
+accuracy_multi
+```
+
+# Assignment Section
+
+### Background
+
+Diabetes is a chronic disease affecting millions of individuals worldwide. Early detection through predictive modeling can help guide prevention and treatment. In this assignment, you will use logistic regression to predict whether an individual has diabetes using basic health information.
+
+We will use the Pima Indians Diabetes Dataset, a commonly used dataset in health informatics available from the UCI Machine Learning Repository and built into the mlbench R package.
+
+## Simple Logistic Regression
+
+```{r}
+#install.packages("mlbench")
+library(mlbench)
+data("PimaIndiansDiabetes")
+df = PimaIndiansDiabetes
+```
+
+#### Data Exploration and Summary Figures
+
+#### Fit a Simple Logistic Regression Model (Train & Test Split)
+
+\<Fit a logistic regression using glucose as a predictors of diabetes\>
+
+#### Interpret Coefficients & Apply the Model for Prediction on Test Data
+
+## Multiple Logistic Regression
+
+#### Fit a Multiple Logistic Regression Model (Train & Test Split)
+
+\< Fit a logistic regression using glucose, age, BMI, and pregnant as predictors of diabetes\>
+
+#### Interpret Coefficients & Apply the Model for Prediction on Test Data
+
+## K-Nearest Neighbors Classification
+
+K-Nearest Neighbors (KNN) is a simple, flexible algorithm that makes predictions based on the majority class of the closest data points.
+
+Use the `caret` and `class` libraries with the `knn()` function. See our in-class lab for a worked example.
+
+#### Prepare the Data
+
+#### Fit a KNN Classifier Model (Train & Test Split)
+
+#### Interpret & Apply to Test Data
+
+## Model Comparison and Discussion

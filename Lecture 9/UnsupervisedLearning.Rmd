@@ -1,0 +1,174 @@
+---
+title: "Unsupervised Learning"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+---
+title: "Lab: Unsupervised Learning (ISLRv2 §12.5)"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ISLR2)  # Loads the ISLR2 package, which includes datasets and functions used in the book
+```
+
+## 12.5.1 Principal Components Analysis
+
+```{r pca-setup}
+# Store the row names (state names) of the USArrests dataset in a variable
+states <- row.names(USArrests)
+# Display the state names
+states
+# Show the column names (variables) of the dataset
+names(USArrests)
+# Compute the mean of each column (variable) using apply with function mean
+apply(USArrests, 2, mean)
+# Compute the variance of each column (variable) using apply with function var
+apply(USArrests, 2, var)
+```
+
+```{r pca-run}
+# Perform Principal Component Analysis (PCA) on the scaled data
+# prcomp: function that computes PCA using SVD (singular value decomposition)
+pr.out <- prcomp(USArrests, scale = TRUE)
+
+# View the components returned by prcomp: includes center, scale, rotation (loadings), x (scores)
+names(pr.out)
+
+# Means and standard deviations used for centering/scaling
+pr.out$center  # Mean of each variable
+pr.out$scale   # Standard deviation of each variable
+
+# Loadings: directions of principal components (eigenvectors)
+pr.out$rotation
+
+# Scores: projections of the original data onto the principal components
+pr.out$x
+
+# Visualize the first two PCs with a biplot (arrows represent variables)
+biplot(pr.out, scale = 0)
+
+# Standard deviations of the principal components
+pr.out$sdev
+
+# Calculate the variance explained by each PC (square of the std. dev.)
+pr.var <- pr.out$sdev^2
+pr.var
+
+# Proportion of variance explained (PVE) by each component
+pve <- pr.var / sum(pr.var)
+pve
+
+# Plot the PVE for each principal component
+plot(pve, xlab = "Principal Component", ylab = "Proportion of Variance Explained", ylim = c(0, 1), type = 'b')
+
+# Plot the cumulative PVE
+plot(cumsum(pve), xlab = "Principal Component", ylab = "Cumulative Proportion of Variance Explained", ylim = c(0, 1), type = 'b')
+```
+
+
+## 12.5.3 Clustering
+
+```{r kmeans}
+# Create synthetic data matrix: 50 rows, 2 columns
+set.seed(2)
+x <- matrix(rnorm(50 * 2), ncol = 2)
+# Shift first 25 points to form a cluster
+x[1:25, 1] <- x[1:25, 1] + 3
+x[1:25, 2] <- x[1:25, 2] - 4
+
+# Apply k-means clustering with K = 2 clusters
+# nstart = 20 means 20 random initializations to avoid local optima
+km.out <- kmeans(x, 2, nstart = 20)
+km.out$cluster  # Cluster assignments
+
+# Plot result for K = 2
+par(mfrow = c(1, 2))
+plot(x, col = (km.out$cluster + 1), main = "K-Means Clustering Results with K = 2", xlab = "", ylab = "", pch = 20, cex = 2)
+
+# Apply k-means clustering with K = 3 clusters
+set.seed(4)
+km.out <- kmeans(x, 3, nstart = 20)
+km.out
+plot(x, col = (km.out$cluster + 1), main = "K-Means Clustering Results with K = 3", xlab = "", ylab = "", pch = 20, cex = 2)
+```
+
+```{r hclust}
+# Perform hierarchical clustering using different linkage methods
+hc.complete <- hclust(dist(x), method = "complete")  # Max linkage
+hc.average <- hclust(dist(x), method = "average")    # Mean linkage
+hc.single <- hclust(dist(x), method = "single")      # Min linkage
+
+# Plot dendrograms
+par(mfrow = c(1, 3))
+plot(hc.complete, main = "Complete Linkage", xlab = "", sub = "", cex = .9)
+plot(hc.average, main = "Average Linkage", xlab = "", sub = "", cex = .9)
+plot(hc.single, main = "Single Linkage", xlab = "", sub = "", cex = .9)
+
+# Cut dendrograms into clusters
+cutree(hc.complete, 2)
+cutree(hc.average, 2)
+cutree(hc.single, 4)
+```
+
+## 12.5.4 NCI60 Gene Expression Example
+
+```{r nci60-pca}
+# Load gene expression data and labels
+nci.labs <- NCI60$labs
+nci.data <- NCI60$data
+
+# Check dimensions and preview labels
+dim(nci.data)
+nci.labs[1:4]
+table(nci.labs)
+
+# Perform PCA on scaled data
+data.pca <- prcomp(nci.data, scale = TRUE)
+
+# Function to assign colors to labels
+Cols <- function(vec) {
+  cols <- rainbow(length(unique(vec)))
+  return(cols[as.numeric(as.factor(vec))])
+}
+
+# Plot PC1 vs PC2 and PC1 vs PC3
+par(mfrow = c(1, 2))
+plot(data.pca$x[, 1:2], col = Cols(nci.labs), pch = 19, xlab = "Z1", ylab = "Z2")
+plot(data.pca$x[, c(1, 3)], col = Cols(nci.labs), pch = 19, xlab = "Z1", ylab = "Z3")
+
+# Summarize PCA and plot scree plots
+summary(data.pca)
+plot(data.pca)
+
+# Proportion of variance explained
+pve <- 100 * data.pca$sdev^2 / sum(data.pca$sdev^2)
+par(mfrow = c(1, 2))
+plot(pve, type = "o", ylab = "PVE", xlab = "Principal Component", col = "blue")
+plot(cumsum(pve), type = "o", ylab = "Cumulative PVE", xlab = "Principal Component", col = "brown3")
+```
+
+```{r nci60-clustering}
+# Standardize the data
+sd.data <- scale(nci.data)
+
+# Compute distance and plot dendrograms using different linkage methods
+par(mfrow = c(1, 3))
+data.dist <- dist(sd.data)
+plot(hclust(data.dist), xlab = "", sub = "", ylab = "", labels = nci.labs, main = "Complete Linkage")
+plot(hclust(data.dist, method = "average"), labels = nci.labs, main = "Average Linkage", xlab = "", sub = "", ylab = "")
+plot(hclust(data.dist, method = "single"), labels = nci.labs, main = "Single Linkage", xlab = "", sub = "", ylab = "")
+
+# Cut dendrogram into 4 clusters and compare with labels
+hc.out <- hclust(dist(sd.data))
+hc.clusters <- cutree(hc.out, 4)
+table(hc.clusters, nci.labs)
+
+# Plot with a cutoff line
+par(mfrow = c(1, 1))
+plot(hc.out, labels = nci.labs)
+abline(h = 139, col = "red")
+```

@@ -1,0 +1,337 @@
+---
+title: "Logistic Regression in R"
+author: "Ryan Gallagher"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistic Regression
+
+## 1. Introduction
+
+This document provides a walkthrough for fitting **Logistic Regression**, **Multiple Logistic Regression**, and **Multinomial Logistic Regression** in R using the `glm()` function and `nnet` package.
+
+## 2. Load Required Libraries
+
+```{r}
+library(ggplot2)
+library(nnet)  # For multinomial logistic regression
+library(dplyr)
+library(ISLR2)
+```
+
+## 3. Exploratory Data Analysis with ggplot2
+
+### 3.1 Load Data
+
+We use the `Default` dataset from the `ISLR2` package.
+
+```{r}
+data <- Default
+str(data)
+```
+
+### 3.2 Visualizing the Data
+
+#### Distribution of Balance
+
+```{r}
+ggplot(data, aes(x = balance, fill = default)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = "identity") +
+  labs(title = "Distribution of Balance by Default Status", x = "Balance", y = "Count")
+```
+
+#### Distribution of Income
+
+This appears to be **bimodal** - i.e. two normal distributions packaged as one.
+
+```{r}
+ggplot(data, aes(x = income, fill = default)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = "identity") +
+  labs(title = "Distribution of Income by Default Status", x = "Income", y = "Count")
+
+ggplot(data, aes(x = income, fill = student)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = "identity") +
+  labs(title = "Distribution of Income by Student Status", x = "Income", y = "Count")
+```
+
+#### Student Status and Default
+
+```{r}
+ggplot(data, aes(x = student, fill = default)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Default Status by Student Status", x = "Student", y = "Count")
+```
+
+## 4. Logistic Regression (Binary Outcome)
+
+### 4.1 Fit Logistic Regression Model
+
+```{r}
+logit_model <- glm(default ~ balance, data = data, family = binomial)
+summary(logit_model)
+```
+
+### 4.2 Make Predictions
+
+```{r}
+data$predicted_prob <- predict(logit_model, type = "response")
+head(data)
+```
+
+### 4.3 Evaluate Model Performance
+
+```{r}
+threshold <- 0.5
+data$predicted_class <- ifelse(data$predicted_prob > threshold, "Yes", "No")
+conf_matrix <- table(data$predicted_class, data$default)
+conf_matrix
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+accuracy
+```
+
+## 5. Multiple Logistic Regression
+
+### 5.1 Fit Model with Multiple Predictors (Including Interaction Term)
+
+Including an **interaction term** between `income` and `student` allows the effect of income on default probability to differ between students and non-students. This accounts for the bimodal nature of income distribution and ensures that the influence of income is properly modeled for each group.
+
+```{r}
+logit_mult_model <- glm(default ~ balance + income * student, data = data, family = binomial)
+summary(logit_mult_model)
+```
+
+### 5.2 Make Predictions & Evaluate
+
+```{r}
+data$mult_predicted_prob <- predict(logit_mult_model, type = "response")
+data$mult_predicted_class <- ifelse(data$mult_predicted_prob > threshold, "Yes", "No")
+conf_matrix_mult <- table(data$mult_predicted_class, data$default)
+conf_matrix_mult
+accuracy_mult <- sum(diag(conf_matrix_mult)) / sum(conf_matrix_mult)
+accuracy_mult
+```
+
+### 5.3 Alternative Approach: Transform Income
+
+Applying a **log transformation** to income can help address the bimodal nature by making the distribution more normal.
+
+```{r}
+data$log_income <- log(data$income)
+logit_transformed_model <- glm(default ~ balance + log_income + student, data = data, family = binomial)
+summary(logit_transformed_model)
+```
+
+### 5.4 Fit Separate Models for Students and Non-Students
+
+Since the `income` variable behaves differently for students and non-students, running **two separate logistic regression models** makes sense. This allows us to fit more appropriate relationships between predictors and default within each group, rather than forcing a single model to account for both distributions.
+
+```{r}
+logit_student <- glm(default ~ balance + income, data = filter(data, student == "Yes"), family = binomial)
+logit_nonstudent <- glm(default ~ balance + income, data = filter(data, student == "No"), family = binomial)
+summary(logit_student)
+summary(logit_nonstudent)
+```
+
+## 6. Multinomial Logistic Regression
+
+### 6.1 Load Data
+
+We use the `Carseats` dataset from the `ISLR2` package and create a categorical outcome variable.
+
+```{r}
+data <- Carseats
+data$SalesCategory <- cut(data$Sales, breaks = 3, labels = c("Low", "Medium", "High"))
+```
+
+### 6.2 Fit Multinomial Logistic Regression
+
+```{r}
+multi_model <- multinom(SalesCategory ~ Price + Income + Advertising, data = data)
+summary(multi_model)
+```
+
+### 6.3 Make Predictions
+
+```{r}
+data$multi_predicted_class <- predict(multi_model)
+head(data)
+```
+
+### 6.4 Evaluate Model
+
+```{r}
+conf_matrix_multi <- table(data$multi_predicted_class, data$SalesCategory)
+conf_matrix_multi
+accuracy_multi <- sum(diag(conf_matrix_multi)) / sum(conf_matrix_multi)
+accuracy_multi
+```
+
+## 7. Conclusion
+
+This document provided a walkthrough of logistic regression for binary and multinomial outcomes using R. The models were evaluated using accuracy metrics and confusion matrices, with special attention to the bimodal nature of income and its effect on model accuracy. The interaction term in multiple logistic regression ensures proper modeling of income differences between students and non-students, and fitting separate models for each group further improves accuracy.
+
+# K-Nearest Neighbor Classification + K-Means Clustering
+
+```{r}
+library(class)
+library(ISLR2)
+library(tidyverse)
+```
+
+## 1. Introduction
+
+For this example, we use the `SMarket` dataset which contains stock market data between 2001 - 2005.
+
+## 2. Data Import & Train/Test Set Segmentation
+
+```{r}
+data("Smarket")
+smarket.tbl = as_tibble(Smarket)
+
+# Segment Data
+train = smarket.tbl %>% filter(Year < 2005) #Training data is before 2005
+test = smarket.tbl %>% filter(Year == 2005)
+
+# Define predictors and response
+train.X = train %>% select(Lag1, Lag2) %>% as.matrix()
+test.X = test %>% select(Lag1, Lag2) %>% as.matrix()
+train.Y = train$Direction
+test.Y = test$Direction
+```
+
+## 3. Train and Predict via KNN
+```{r}
+# Pick k=3 
+knn.pred = knn(train.X, test.X, train.Y, k=3)
+```
+
+## 4. Evaluate Performance
+```{r}
+conf.matrix = table(Predicted = knn.pred, Actual = test.Y)
+print(conf.matrix)
+
+# Compute Accuracy
+accuracy = mean(knn.pred == test.Y)
+accuracy
+```
+
+## 5. Experiment with Different K Values
+```{r}
+knn.pred_4 = knn(train.X, test.X, train.Y, k=4)
+mean(knn.pred_4 == test.Y)
+
+knn.pred_5 = knn(train.X, test.X, train.Y, k=5)
+mean(knn.pred_5 == test.Y)
+
+knn.pred_6 = knn(train.X, test.X, train.Y, k=6)
+mean(knn.pred_6 == test.Y)
+```
+
+## 6. Plot Across Different K Values
+```{r}
+train.X = scale(train.X)
+test.X = scale(test.X)
+
+# Function to compute average error for a given K over multiple itterations
+computer_avg_error = function(k, num_iter = 50) {
+  errors = replicate(num_iter, {
+    knn_pred = knn(train.X, test.X, train.Y, k = k)
+    mean(knn_pred != test.Y) #Misclassification
+  })
+  mean(errors) # Return the average errors across iterations 
+}
+
+# Compute error for different values of K 
+k_values = tibble(K = seq(1,20, by=1)) %>% 
+  mutate(Avg_Error_Rate = map_dbl(K, ~ computer_avg_error(.x, num_iter = 100)))
+```
+
+```{r}
+# Plot the averaged error rates
+ggplot(k_values, aes(x = K, y = Avg_Error_Rate)) +
+  geom_line(color = 'blue') +
+  geom_point(size = 2) +
+  labs(title = "Vizualizing Optimal K in KNN (Error averaged over 100 runs)",
+       x = "Number of Neighbors (K)",
+       y = "Average Misclassification Error Rate")
+```
+# K-Means Clustering
+
+## 1. Build Data
+```{r}
+x.tbl = tibble(
+  X1 = rnorm(50),
+  X2 = rnorm(50)
+)
+
+x.tbl = x.tbl %>% 
+  mutate(X1 = ifelse(row_number() <= 25, X1 + 3, X1),
+         X2 = ifelse(row_number() <= 25, X2 - 4, X2))
+```
+
+## 2. Apply K-Means Clustering
+```{r}
+# K = 4
+km.out = kmeans(x.tbl, center = 4, nstart = 20)
+
+x.tbl = x.tbl %>% 
+  mutate(Cluster = as.factor(km.out$cluster))
+```
+
+## 3. Vizualize Clustering
+```{r}
+ggplot(x.tbl, aes(x = X1, y = X2, color = Cluster)) +
+  geom_point(size = 3) +
+  labs(title = "K-Means Clustering Results (K=4)")
+```
+
+## 4. Choosing Optimal K (Elbow Method)
+
+```{r}
+elbow = tibble(K = 1:20) %>%
+  mutate(Total_WSS = map_dbl(K, ~ kmeans(x.tbl %>% select(X1, X2), centers = .x, nstart=20)$tot.withinss))
+
+ggplot(elbow, aes(x = K, y = Total_WSS)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = 1:20) +
+  labs(title = "Elbow Plots for Optimal K",
+       x = "Number of Clusters (K)", 
+       y = "Total Within-Cluster Sum of Squares")
+
+```
+
+### Assignment: Logistic Regression
+
+Students should:
+
+1\. **Explore the dataset** using summary statistics and visualizations.
+
+2\. **Fit a logistic regression model** predicting **Diabetes (Yes/No)** using **BMI, Age, and Physical Activity** as predictors.
+
+3\. **Interpret the coefficients** and assess model accuracy using a confusion matrix.
+
+4\. **Submit a brief report** including their findings, code, and a discussion on the model’s performance.
+
+#### Beginning Dataset
+
+```{r}
+library(NHANES)
+nhanes_data <- NHANES::NHANES
+
+# Filter for Males between 18-55 and select relevant variables
+nhanes_data <- nhanes_data %>%
+  filter(Gender == "male", Age >= 18, Age <= 55) %>%
+  select(Age, BMI, Diabetes, PhysActive) %>%
+  drop_na() %>%
+  mutate(Diabetes = ifelse(Diabetes == "Yes", 1, 0),
+         PhysActive = ifelse(PhysActive == "Yes", 1, 0))
+
+# Display structure
+str(nhanes_data)
+```

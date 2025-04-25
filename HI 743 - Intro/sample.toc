@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{HI 743}{3}{0}{1}
+\beamer@sectionintoc {2}{Introductions}{4}{0}{2}
+\beamer@subsectionintoc {2}{1}{About Me}{4}{0}{2}
+\beamer@subsectionintoc {2}{2}{About You}{9}{0}{2}
+\beamer@sectionintoc {3}{Syllabus}{10}{0}{3}
+\beamer@subsectionintoc {3}{1}{Syllabus Review}{10}{0}{3}
+\beamer@subsectionintoc {3}{2}{Weekly Itinerary}{11}{0}{3}
